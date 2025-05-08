@@ -9,16 +9,21 @@ class UsuarioController{
         return res.status(200).json(usuario);
     }
 
-    read(req, res){
-        
+    async read(req, res){
+        const usuarios = await UsuarioModel.find();
+        return res.status(200).json(usuarios); 
     }
 
     update(req, res){
         
     }
 
-    delete(req, res){
-        
+    async delete(req, res){
+        const { id } = req.params
+
+        await UsuarioModel.findByIdAndDelete
+
+        return res.status(200).json({"mensagem": "Usuario deletado com sucesso!"});
     }
 }
 
