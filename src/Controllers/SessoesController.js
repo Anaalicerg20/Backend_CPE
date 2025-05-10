@@ -1,7 +1,7 @@
-const { create } = require("../../Models/SessoesModel");
+// const { create } = require("../../Models/SessoesModel");
 const SessoesModel = require('../../Models/SessoesModel');
 
-class SessoesControllers{
+class SessoesController{
     async create(req, res){
         const sessoes = await SessoesModel.create(req.body)
 
@@ -9,12 +9,16 @@ class SessoesControllers{
     }
 
     async read(req, res){
-        const sessoes = await SessoesModel.find();
+        const sessoes = await SessoesModel.find().populate('id_usuario', '-senha');
         return res.status(200).json(sessoes); 
     }
 
-    update(req, res){
-        
+    async update(req, res){
+        const { id } = req.params;
+
+        const sessoes = await SessoesModel.findByIdAndUpdate(id, req.body, {new: true })
+        return res.status(200).json(sessoes);
+
     }
 
     async delete(req, res){
