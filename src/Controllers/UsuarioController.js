@@ -1,11 +1,11 @@
-
 const UsuarioModel = require("../Models/UsuarioModel");
 
 class UsuarioController{
     async create(req, res){
         try {
-            const usuario = await UsuarioModel.create(req.body)
-
+            console.log("oi");
+            const usuario = await UsuarioModel.create(req.body);
+            console.log(usuario);
             return res.status(200).json(usuario);
         } catch (error){
             res.status(500).json({message: "Deu ruim aqui!", error: error.message});
