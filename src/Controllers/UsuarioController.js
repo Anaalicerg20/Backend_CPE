@@ -1,12 +1,16 @@
 
-const { create } = require("../../Models/UsuarioModel");
-const UsuarioModel = require('../../Models/UsuarioModel');
+const UsuarioModel = require("../Models/UsuarioModel");
 
 class UsuarioController{
     async create(req, res){
-        const usuario = await UsuarioModel.create(req.body)
+        try {
+            const usuario = await UsuarioModel.create(req.body)
 
-        return res.status(200).json(usuario);
+            return res.status(200).json(usuario);
+        } catch (error){
+            res.status(500).json({message: "Deu ruim aqui!", error: error.message});
+        }
+
     } 
 
     async read(req, res){
@@ -24,7 +28,7 @@ class UsuarioController{
     async delete(req, res){
         const { id } = req.params
 
-        await UsuarioModel.findByIdAndDelete
+        await UsuarioModel.findByIdAndDelete(id);
 
         return res.status(200).json({"mensagem": "Usuario deletado com sucesso!"});
     }

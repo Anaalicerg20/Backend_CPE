@@ -1,5 +1,5 @@
-// const { create } = require("../../Models/SessoesModel");
-const SessoesModel = require('../../Models/SessoesModel');
+
+const SessoesModel = require('../Models/SessoesModel');
 
 class SessoesController{
     async create(req, res){
@@ -24,7 +24,7 @@ class SessoesController{
     async delete(req, res){
         const { id } = req.params
 
-        await SessaoModel.findByIdAndDelete
+        await SessoesModel.findByIdAndDelete(id);
 
         return res.status(200).json({"mensagem": "Sessao deletado com sucesso!"});
     }
