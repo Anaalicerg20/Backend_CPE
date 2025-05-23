@@ -1,12 +1,15 @@
 const UsuarioModel = require("../Models/UsuarioModel");
 
 class UsuarioController{
-    async create(req, res){
+
+    async create(req, res) {
         try {
-            console.log("oi");
             const usuario = await UsuarioModel.create(req.body);
+
+            const { senha, repetirSenha,  ...novoUsuario} = usuario.toObject()
+
             console.log(usuario);
-            return res.status(200).json(usuario);
+            return res.status(200).json(novoUsuario);
         } catch (error){
             res.status(500).json({message: "Deu ruim aqui!", error: error.message});
         }
@@ -19,19 +22,41 @@ class UsuarioController{
     }
 
     async update(req, res){
-        const { id } = req.params;
+        try{
+            const { id } = req.params;
+            const usuarioEncontrado = await UsuarioModel.findById(id);
+            
+            if(!usuarioEncontrado) 
+                return res.status(404).json({ message:"Usuario não encontrado "});
+            
+            const usuario = await usuarioEncontrado.set(req.body).save();
 
-        const usuario = await UsuarioModel.findByIdAndUpdate(id, req.body, {new: true })
-        return res.status(200).json(usuario);
+            res.status(200).json(usuario);
+        } catch (error) {
+            res
+                .status(500)
+                .json({ message : "Deu ruim aqui!, error: error.message "});
+        }
     }
 
     async delete(req, res){
-        const { id } = req.params
+        try{
+            const { id } = req.params
 
-        await UsuarioModel.findByIdAndDelete(id);
+            const usuarioEncontrado = await UsuarioModel.findById(id);
 
-        return res.status(200).json({"mensagem": "Usuario deletado com sucesso!"});
-    }
+            if(!usuarioEncontrado) 
+                return res.status(404).json({ message:"Usuario não encontrado "});
+            
+            await usuarioEncontrado.deleteOne();
+
+            res.status(200).json({"mensagem": "Usuario deletado com sucesso!"});
+        } catch (error) {
+                res
+                    .status(500)
+                    .json({ message : "Deu ruim aqui!, error: error.message "});
+            }
+        }
 }
 
 module.exports = new UsuarioController();

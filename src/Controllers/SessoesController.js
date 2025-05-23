@@ -1,11 +1,17 @@
-
 const SessoesModel = require('../Models/SessoesModel');
+const UsuarioModel = require('../Models/UsuarioModel');
 
 class SessoesController{
     async create(req, res){
-        const sessoes = await SessoesModel.create(req.body)
+        try {
+            const sessoes = await SessoesModel.create(req.body);
 
-        return res.status(200).json(sessoes);
+            res.status(200).json(sessoes);
+        } catch(error){
+            res
+                .status(500)
+                .json({ message : "Deu ruim aqui!, error: error.message "});
+        }
     }
 
     async read(req, res){
@@ -16,9 +22,8 @@ class SessoesController{
     async update(req, res){
         const { id } = req.params;
 
-        const sessoes = await SessoesModel.findByIdAndUpdate(id, req.body, {new: true })
-        return res.status(200).json(sessoes);
-
+        const usuario = await SessoesModel.findByIdAndUpdate(id, req.body, {new: true })
+        return res.status(200).json(usuario);
     }
 
     async delete(req, res){
