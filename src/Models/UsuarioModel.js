@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-
+const SessoesModel = require("./SessoesModel")
 const Schema = mongoose.Schema;
+const bcrypt = require('bcrypt');
 
 const UsuarioSchema = new Schema({
     nome: {
@@ -29,29 +29,28 @@ const UsuarioSchema = new Schema({
 });
 
 UsuarioSchema.pre("save", async function (next) {
-    const user = this
+    const usuario = this;
 
-    if (user.isModified("senha")){
+    if (usuario.isModified("senha")){
         const salt = await bcrypt.genSalt();
-        const hash = await bcrypt.hash(user.senha, salt); 
+        const hash = await bcrypt.hash(usuario.senha, salt); 
 
-        user.senha = hash; 
+        usuario.senha = hash; 
 
         console.log({ salt, hash });
     }
-
-    if (user.isModified("repetirSenha")){
-        const salt = await bcrypt.genSalt();
-        const hash = await bcrypt.hash(user.senha, salt); 
-
-        user.repetirSenha = hash; 
-
-        console.log({ salt, hash });
-    }
-
-
-    next()
+    next();
 });
+
+UsuarioSchema.pre(
+    "deleteOne",
+    { document: true, query: false }, 
+    async function(){
+        const usuario = this;
+
+        return SessoesModel.deleteOne({ id_usuario: usuario._id});
+    }
+);
 
 const UsuarioModel = mongoose.model('usuarios', UsuarioSchema);
 
