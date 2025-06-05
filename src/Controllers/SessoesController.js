@@ -9,7 +9,7 @@ class SessoesController{
             );
             if(!usuarioEncontrado) return res.status(404).json({ message:"Usuário não encontrado "});
 
-            const sessoes = await SessoesModel.create(req.body);
+            const sessoes = await SessoesModel.create({ id_usuario });
 
             res.status(200).json(sessoes);
         } catch(error){
