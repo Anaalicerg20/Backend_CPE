@@ -21,11 +21,6 @@ const UsuarioSchema = new Schema({
         select: false, 
     },
 
-    repetirSenha: {
-        type: String,
-        select: false, 
-    },
-
 });
 
 UsuarioSchema.pre("save", async function (next) {

@@ -1,4 +1,5 @@
 const UsuarioModel = require("../Models/UsuarioModel");
+const jwt = require("jsonwebtoken");
 
 class UsuarioController{
 
@@ -56,7 +57,11 @@ class UsuarioController{
                     .status(500)
                     .json({ message : "Deu ruim aqui!, error: error.message "});
             }
-        }
+    }
+
+    async login(req, res) {
+        
+    }
 }
 
 module.exports = new UsuarioController();
