@@ -3,17 +3,19 @@ const moongose = require("mongoose");
 
 const Schema = moongose.Schema;
 
-const SessoesSchema =new Schema({
-   id_usuario:{
-    type: Schema.Types.ObjectId,
-    ref: 'usuarios',
-    unique: true,
+const SessoesSchema = new Schema(
+  {
+    id_usuario: {
+      type: Schema.Types.ObjectId,
+      ref: "usuarios",
+      unique: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-   } 
-},{
-    timestamps : true
-})
-
-const SessoesModel = mongoose.model('sessoes', SessoesSchema);
+const SessoesModel = mongoose.model("sessoes", SessoesSchema);
 
 module.exports = SessoesModel;
